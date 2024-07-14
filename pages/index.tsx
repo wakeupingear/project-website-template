@@ -6,11 +6,11 @@ export default function Home() {
         <main>
             <div className="bg-blue-300 h-screen w-full flex items-center justify-center flex-col gap-4">
                 <h1 className="text-6xl">{SITE_CONFIG.gameName}</h1>
-                <p>{SITE_CONFIG.gameName}</p>
+                <p>{SITE_CONFIG.logline}</p>
             </div>
             <div className="flex flex-col gap-12 mt-4">
                 {Boolean(SITE_CONFIG.sections.length) && (
-                    <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-12">
                         {SITE_CONFIG.sections.map((section) => (
                             <Section section={section} key={section.id} />
                         ))}

@@ -3,13 +3,13 @@ import Link from 'next/link';
 import React from 'react';
 
 interface NavItemProps {
-    tag: string;
+    href: string;
     children: React.ReactNode;
 }
 
-function NavItem({ tag, children }: NavItemProps) {
+function NavItem({ href, children }: NavItemProps) {
     return (
-        <Link href={`/#${tag}`} className="p-4">
+        <Link href={href} className="p-4">
             {children}
         </Link>
     );
@@ -20,13 +20,16 @@ export default function Navbar() {
 
     return (
         <nav id="page-nav" className="fixed top-0 left-0 w-full">
-            {Boolean(navItems.length) && (
+            {Boolean(navItems.length || SITE_CONFIG.includePress) && (
                 <div className="flex">
                     {navItems.map(({ id, title }) => (
-                        <NavItem tag={id} key={id}>
+                        <NavItem key={id} href={`/#${id}`}>
                             {title}
                         </NavItem>
                     ))}
+                    {SITE_CONFIG.includePress && (
+                        <NavItem href="/press">Press</NavItem>
+                    )}
                 </div>
             )}
         </nav>

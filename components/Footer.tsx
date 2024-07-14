@@ -6,11 +6,15 @@ export default function Footer() {
     if (!SITE_CONFIG.teamName) return null;
 
     return (
-        <footer id="page-footer" className="w-full text-center p-4">
+        <footer id="page-footer" className="w-full text-center p-4 mt-auto">
             <p>
                 &copy; {new Date().getFullYear()}{' '}
                 {SITE_CONFIG.teamLink ? (
-                    <Link href={SITE_CONFIG.teamLink}>
+                    <Link
+                        href={SITE_CONFIG.teamLink}
+                        target="_blank"
+                        rel="noreferrer"
+                    >
                         {SITE_CONFIG.teamName}
                     </Link>
                 ) : (

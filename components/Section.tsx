@@ -1,5 +1,5 @@
 import { SiteSection } from '@/types';
-import React from 'react';
+import React, { Fragment } from 'react';
 import CenterContent from './CenterContent';
 
 interface SectionProps {
@@ -7,13 +7,15 @@ interface SectionProps {
 }
 
 export default function Section({ section }: SectionProps) {
-    const { title, content } = section;
+    const { title, content, id } = section;
 
     return (
-        <CenterContent>
+        <CenterContent id={id}>
             <h2 className="text-3xl">{title}</h2>
-            {content.map((paragraph, index) => (
-                <p key={index}>{paragraph}</p>
+            {content.map((entry, index) => (
+                <Fragment key={index}>
+                    {typeof entry === 'string' ? <p>{entry}</p> : entry}
+                </Fragment>
             ))}
         </CenterContent>
     );
