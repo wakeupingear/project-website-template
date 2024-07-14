@@ -1,6 +1,6 @@
 import React from 'react';
 
-type SocialPreset =
+export type SocialSite =
     | 'twitter'
     | 'discord'
     | 'github'
@@ -11,20 +11,8 @@ type SocialPreset =
     | 'kickstarter';
 export type SocialLink = {
     link: string;
-    preset?: SocialPreset;
+    site?: SocialSite;
     name?: string;
-};
-
-export const SOCIAL_LINK_PREFIXES: Record<string, SocialPreset> = {
-    'https://www.youtube.com/watch?': 'youtube',
-    'https://www.twitch.tv/': 'twitch',
-    'https://twitter.com/': 'twitter',
-    'https://x.com/': 'twitter',
-    'https://discord.gg/': 'discord',
-    'https://github.com/': 'github',
-    'https://patreon.com/': 'patreon',
-    'https://kickstarter.com/': 'kickstarter',
-    'https://artstation.com/': 'artstation',
 };
 
 export type SiteSection = {

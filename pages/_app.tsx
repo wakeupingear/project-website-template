@@ -1,8 +1,12 @@
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import SITE_CONFIG from '@/config';
+import {
+    applySchema,
+    SITE_CONFIG_SCHEMA,
+    TransformedSiteConfig,
+} from '@/schemas';
 import '@/styles/globals.css';
-import { GroupedContributors, SiteConfig } from '@/types';
 import type { AppProps } from 'next/app';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
@@ -10,28 +14,13 @@ import { createContext, useContext, useMemo } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
 
-interface Config {
-    config: SiteConfig;
-    groupedContributors: GroupedContributors;
-}
-
-const ConfigContext = createContext<Config>({} as Config);
+const ConfigContext = createContext<TransformedSiteConfig>(
+    {} as TransformedSiteConfig
+);
 
 export default function App({ Component, pageProps }: AppProps) {
-    const configValues = useMemo<Config>(() => {
-        
-
-        const config = SITE_CONFIG;
-        const groupedContributors = (
-            config.contributors || []
-        ).reduce<GroupedContributors>((acc, contributor) => {
-            const key = contributor.department || 'Other';
-            if (!acc[key]) acc[key] = [];
-            acc[key].push(contributor);
-            return acc;
-        }, {});
-
-        return { config, groupedContributors };
+    const configValues = useMemo(() => {
+        return applySchema(SITE_CONFIG_SCHEMA, SITE_CONFIG);
     }, []);
 
     return (

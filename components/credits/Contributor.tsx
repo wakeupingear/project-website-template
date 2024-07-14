@@ -7,7 +7,7 @@ type ContributorProps = {
 };
 
 export default function Contributor({ contributor }: ContributorProps) {
-    const { name, role, socialLinks } = contributor;
+    const { name, socialLinks } = contributor;
 
     return (
         <div className="flex flex-col gap-2">

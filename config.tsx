@@ -22,7 +22,6 @@ const SITE_CONFIG: SiteConfig = {
     socialLinks: [
         {
             link: 'https://twitter.com/',
-            preset: 'twitter',
         },
     ],
     contributors: [
@@ -33,7 +32,6 @@ const SITE_CONFIG: SiteConfig = {
             socialLinks: [
                 {
                     link: 'https://twitter.com/',
-                    preset: 'twitter',
                 },
             ],
         },
@@ -44,7 +42,6 @@ const SITE_CONFIG: SiteConfig = {
             socialLinks: [
                 {
                     link: 'https://twitter.com/',
-                    preset: 'twitter',
                 },
             ],
         },

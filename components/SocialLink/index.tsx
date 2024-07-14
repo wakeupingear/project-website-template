@@ -8,7 +8,7 @@ interface SocialLinkProps {
 export default function SocialLink({ link }: SocialLinkProps) {
     return (
         <a href={link.link} target="_blank" rel="noreferrer">
-            {link.name || link.preset}
+            {link.name || link.site}
         </a>
     );
 }
