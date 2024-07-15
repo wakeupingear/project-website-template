@@ -1,6 +1,6 @@
 import React from 'react';
 
-export type SocialSite =
+export type ExternalSite =
     | 'twitter'
     | 'discord'
     | 'github'
@@ -10,8 +10,8 @@ export type SocialSite =
     | 'patreon'
     | 'kickstarter';
 export type SocialLink = {
-    link: string;
-    site?: SocialSite;
+    href: string;
+    site?: ExternalSite;
     name?: string;
 };
 type _SocialLink = SocialLink | string;

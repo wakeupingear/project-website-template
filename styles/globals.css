@@ -35,4 +35,5 @@ body {
 
 .text-link {
     text-decoration: underline;
+    @apply text-red-400;
 }

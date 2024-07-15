@@ -6,7 +6,7 @@ const SITE_CONFIG: SiteConfig = {
     logline: 'A simple example game',
     linkEmbeds: {
         abby: {
-            link: 'https://www.google.com/',
+            href: 'https://www.google.com/',
             site: 'discord',
             name: 'Abby',
         },
@@ -31,7 +31,7 @@ const SITE_CONFIG: SiteConfig = {
     includePress: true,
     socialLinks: [
         {
-            link: 'https://twitter.com/',
+            href: 'https://twitter.com/',
         },
     ],
     contributors: [
@@ -47,7 +47,7 @@ const SITE_CONFIG: SiteConfig = {
             department: 'Art',
             socialLinks: [
                 {
-                    link: 'https://twitter.com/',
+                    href: 'https://twitter.com/',
                 },
                 'abby',
             ],

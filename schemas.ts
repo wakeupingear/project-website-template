@@ -1,10 +1,10 @@
 import React from 'react';
 import {
+    ExternalSite,
     GroupedContributors,
     ProjectContributor,
     SiteConfig,
     SocialLink,
-    SocialSite,
 } from './types';
 
 type Transform<Input, Output = Input> = (
@@ -63,7 +63,7 @@ export function applySchema<Input extends object, Output extends object>(
     }, (Array.isArray(original) ? [] : {}) as Output);
 }
 
-export const SOCIAL_LINK_PREFIXES: Record<string, SocialSite> = {
+export const SOCIAL_LINK_PREFIXES: Record<string, ExternalSite> = {
     'https://www.youtube.com/watch?': 'youtube',
     'https://www.twitch.tv/': 'twitch',
     'https://twitter.com/': 'twitter',
@@ -79,9 +79,10 @@ const transform_socialLink: Transform<SocialLink | string> = (link) => {
     if (link.site) return link;
 
     const prefix = Object.keys(SOCIAL_LINK_PREFIXES).find((prefix) =>
-        link.link.startsWith(prefix)
+        link.href.startsWith(prefix)
     );
     if (prefix) link.site = SOCIAL_LINK_PREFIXES[prefix];
+
     return link;
 };
 const transform_socialLinks: Transform<(SocialLink | string)[] | undefined> = (
