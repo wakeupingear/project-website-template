@@ -4,11 +4,21 @@ import { SiteConfig } from './types';
 const SITE_CONFIG: SiteConfig = {
     gameName: 'Example Game',
     logline: 'A simple example game',
+    linkEmbeds: {
+        abby: {
+            link: 'https://www.google.com/',
+            site: 'discord',
+            name: 'Abby',
+        },
+    },
     sections: [
         {
             id: 'about',
             title: 'About',
-            content: ['This is an example game.', 'This is an example game.'],
+            content: [
+                'This is an example game about {{abby}}.',
+                'This is an example game.',
+            ],
         },
         {
             id: 'credits',
@@ -29,11 +39,7 @@ const SITE_CONFIG: SiteConfig = {
             name: 'Example Contributor 1',
             role: 'Programmer',
             department: 'Engineering',
-            socialLinks: [
-                {
-                    link: 'https://twitter.com/',
-                },
-            ],
+            socialLinks: ['abby'],
         },
         {
             name: 'Example Contributor 2',
@@ -43,6 +49,7 @@ const SITE_CONFIG: SiteConfig = {
                 {
                     link: 'https://twitter.com/',
                 },
+                'abby',
             ],
         },
     ],

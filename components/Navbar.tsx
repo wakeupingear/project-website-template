@@ -1,4 +1,4 @@
-import SITE_CONFIG from '@/config';
+import { useConfig } from '@/pages/_app';
 import Link from 'next/link';
 import React from 'react';
 
@@ -16,20 +16,19 @@ function NavItem({ href, children }: NavItemProps) {
 }
 
 export default function Navbar() {
-    const navItems = SITE_CONFIG.sections.filter(({ hideInNav }) => !hideInNav);
+    const { sections, includePress = true } = useConfig();
+    const navItems = sections.filter(({ hideInNav }) => !hideInNav);
 
     return (
         <nav id="page-nav" className="fixed top-0 left-0 w-full">
-            {Boolean(navItems.length || SITE_CONFIG.includePress) && (
+            {Boolean(navItems.length || includePress) && (
                 <div className="flex">
                     {navItems.map(({ id, title }) => (
                         <NavItem key={id} href={`/#${id}`}>
                             {title}
                         </NavItem>
                     ))}
-                    {SITE_CONFIG.includePress && (
-                        <NavItem href="/press">Press</NavItem>
-                    )}
+                    {includePress && <NavItem href="/press">Press</NavItem>}
                 </div>
             )}
         </nav>

@@ -14,6 +14,7 @@ export type SocialLink = {
     site?: SocialSite;
     name?: string;
 };
+type _SocialLink = SocialLink | string;
 
 export type SiteSection = {
     id: string;
@@ -26,19 +27,19 @@ export type SiteSection = {
 export type ProjectContributor = {
     name: string;
     role: string;
-    socialLinks?: SocialLink[];
+    socialLinks?: _SocialLink[];
     department?: string;
 };
-
 export type GroupedContributors = Record<string, ProjectContributor[]>;
 
 export type SiteConfig = {
+    linkEmbeds?: Record<string, SocialLink>;
     gameName: string;
     logline: string;
     sections: SiteSection[];
     teamName?: string;
     teamLink?: string;
     includePress?: boolean;
-    socialLinks?: SocialLink[];
+    socialLinks?: _SocialLink[];
     contributors?: ProjectContributor[];
 };

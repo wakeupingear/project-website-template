@@ -1,3 +1,4 @@
+import React from 'react';
 import {
     GroupedContributors,
     ProjectContributor,
@@ -9,6 +10,32 @@ import {
 type Transform<Input, Output = Input> = (
     original: Input
 ) => Output extends (infer U)[] ? NonNullable<U>[] : Output;
+
+export const recursiveStringTransform = (
+    obj: any,
+    transform: (original: string) => string | React.ReactNode
+): any => {
+    if (typeof obj === 'string') {
+        return transform(obj);
+    }
+
+    if (Array.isArray(obj)) {
+        return obj.map((item) => recursiveStringTransform(item, transform));
+    }
+
+    if (typeof obj === 'object' && obj !== null) {
+        const result: { [key: string]: any } = {};
+        for (const key in obj) {
+            if (Object.prototype.hasOwnProperty.call(obj, key)) {
+                result[key] = recursiveStringTransform(obj[key], transform);
+            }
+        }
+        return result;
+    }
+
+    return obj;
+};
+
 export type Schema<Input, Output> = {
     [K in keyof Input & keyof Output]?: Input[K] extends object
         ? Schema<Input[K], Output[K]>
@@ -22,18 +49,16 @@ export function applySchema<Input extends object, Output extends object>(
     return Object.keys(original).reduce<Output>((acc, _key) => {
         const key = _key as keyof Input & keyof Output;
         const transform = schema[key];
-        if (!transform) {
-            acc[key] = original[key] as any;
-        } else if (typeof transform === 'function') {
-            (acc[key] as any) = (transform as Transform<any, any>)(
-                original[key]
-            );
-        } else {
-            acc[key] = applySchema(
-                transform as Schema<any, any>,
-                original[key]
-            );
+        let val: any = original[key];
+        if (transform) {
+            if (typeof transform === 'function') {
+                val = (transform as Transform<any, any>)(original[key]);
+            } else {
+                val = applySchema(transform as Schema<any, any>, original[key]);
+            }
         }
+        acc[key] = val;
+
         return acc;
     }, (Array.isArray(original) ? [] : {}) as Output);
 }
@@ -49,7 +74,8 @@ export const SOCIAL_LINK_PREFIXES: Record<string, SocialSite> = {
     'https://kickstarter.com/': 'kickstarter',
     'https://artstation.com/': 'artstation',
 };
-const transform_socialLink: Transform<SocialLink> = (link) => {
+const transform_socialLink: Transform<SocialLink | string> = (link) => {
+    if (typeof link === 'string') return link;
     if (link.site) return link;
 
     const prefix = Object.keys(SOCIAL_LINK_PREFIXES).find((prefix) =>
@@ -58,8 +84,9 @@ const transform_socialLink: Transform<SocialLink> = (link) => {
     if (prefix) link.site = SOCIAL_LINK_PREFIXES[prefix];
     return link;
 };
-const transform_socialLinks: Transform<SocialLink[] | undefined> = (links) =>
-    links?.map(transform_socialLink);
+const transform_socialLinks: Transform<(SocialLink | string)[] | undefined> = (
+    links
+) => links?.map(transform_socialLink);
 
 const transform_contributor: Transform<ProjectContributor> = (contributor) => ({
     ...contributor,

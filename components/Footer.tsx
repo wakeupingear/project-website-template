@@ -1,24 +1,26 @@
-import SITE_CONFIG from '@/config';
+import { useConfig } from '@/pages/_app';
 import Link from 'next/link';
 import React from 'react';
 
 export default function Footer() {
-    if (!SITE_CONFIG.teamName) return null;
+    const { teamLink, teamName } = useConfig();
+    if (!teamName) return null;
 
     return (
         <footer id="page-footer" className="w-full text-center p-4 mt-auto">
             <p>
                 &copy; {new Date().getFullYear()}{' '}
-                {SITE_CONFIG.teamLink ? (
+                {teamLink ? (
                     <Link
-                        href={SITE_CONFIG.teamLink}
+                        href={teamLink}
                         target="_blank"
                         rel="noreferrer"
+                        className="text-link"
                     >
-                        {SITE_CONFIG.teamName}
+                        {teamName}
                     </Link>
                 ) : (
-                    SITE_CONFIG.teamName
+                    teamName
                 )}
             </p>
         </footer>
