@@ -3,7 +3,9 @@ import React from 'react';
 import Contributor from './Contributor';
 
 export default function Credits() {
-    const { contributors } = useConfig();
+    const {
+        team: { contributors },
+    } = useConfig();
 
     return (
         <div className="flex flex-col gap-4">

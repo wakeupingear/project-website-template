@@ -1,4 +1,4 @@
-import { ProjectContributor } from '@/types';
+import { ProjectContributor } from '@/src/utils/types';
 import React from 'react';
 import SocialLink from '../SocialLink';
 

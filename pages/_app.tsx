@@ -1,18 +1,17 @@
-import Footer from '@/components/Footer';
-import Navbar from '@/components/Navbar';
+import Footer from '@/src/components/Footer';
 import {
     applySchema,
     recursiveStringTransform,
     SITE_CONFIG_SCHEMA,
     TransformedSiteConfig,
-} from '@/schemas';
+} from '@/src/utils/schemas';
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
 import { createContext, useContext, useMemo } from 'react';
 import SITE_CONFIG from '@/config';
-import SocialLink from '@/components/SocialLink';
+import SocialLink from '@/src/components/SocialLink';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -63,16 +62,19 @@ export default function App({ Component, pageProps }: AppProps) {
         return transformedData;
     }, []);
 
+    const {
+        project: { name: gameName },
+    } = configValues;
+
     return (
         <>
             <Head>
-                <title>{configValues.gameName}</title>
+                <title>{gameName}</title>
             </Head>
             <ConfigContext.Provider value={configValues}>
                 <div
                     className={`min-h-screen flex flex-col justify-between ${inter.className}`}
                 >
-                    <Navbar />
                     <Component {...pageProps} />
                     <Footer />
                 </div>

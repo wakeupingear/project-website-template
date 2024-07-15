@@ -64,7 +64,7 @@ export function applySchema<Input extends object, Output extends object>(
 }
 
 export const SOCIAL_LINK_PREFIXES: Record<string, ExternalSite> = {
-    'https://www.youtube.com/watch?': 'youtube',
+    'https://www.youtube.com/': 'youtube',
     'https://www.twitch.tv/': 'twitch',
     'https://twitter.com/': 'twitter',
     'https://x.com/': 'twitter',
@@ -73,6 +73,10 @@ export const SOCIAL_LINK_PREFIXES: Record<string, ExternalSite> = {
     'https://patreon.com/': 'patreon',
     'https://kickstarter.com/': 'kickstarter',
     'https://artstation.com/': 'artstation',
+    'https://store.steampowered.com/app/': 'steam',
+    'https://apps.apple.com/us/app/': 'apple',
+    'https://tiktok.com/@': 'tiktok',
+    'https://www.linkedin.com/company/': 'linkedin',
 };
 const transform_socialLink: Transform<SocialLink | string> = (link) => {
     if (typeof link === 'string') return link;
@@ -110,11 +114,20 @@ type Modify<T, R> = Omit<T, keyof R> & R;
 export type TransformedSiteConfig = Modify<
     SiteConfig,
     {
-        contributors: GroupedContributors;
+        team: Modify<SiteConfig['team'], { contributors: GroupedContributors }>;
     }
 >;
 
 export const SITE_CONFIG_SCHEMA: Schema<SiteConfig, TransformedSiteConfig> = {
-    socialLinks: transform_socialLinks,
-    contributors: transform_contributors,
+    project: {
+        platforms: transform_socialLinks,
+        ratings: transform_socialLinks,
+        socialLinks: transform_socialLinks,
+    },
+    team: { contributors: transform_contributors },
+    linkEmbeds: (original) =>
+        Object.entries(original || {}).reduce((acc, [key, original]) => {
+            acc[key] = transform_socialLink(original) as SocialLink;
+            return acc;
+        }, {} as Record<string, SocialLink>),
 };

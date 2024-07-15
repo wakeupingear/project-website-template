@@ -16,19 +16,22 @@ function NavItem({ href, children }: NavItemProps) {
 }
 
 export default function Navbar() {
-    const { sections, includePress = true } = useConfig();
-    const navItems = sections.filter(({ hideInNav }) => !hideInNav);
+    const {
+        homepage: { content },
+        press,
+    } = useConfig();
+    const navItems = content.filter(({ hideInNav }) => !hideInNav);
 
     return (
         <nav id="page-nav" className="fixed top-0 left-0 w-full">
-            {Boolean(navItems.length || includePress) && (
+            {Boolean(navItems.length && press) && (
                 <div className="flex">
                     {navItems.map(({ id, title }) => (
                         <NavItem key={id} href={`/#${id}`}>
                             {title}
                         </NavItem>
                     ))}
-                    {includePress && <NavItem href="/press">Press</NavItem>}
+                    {press && <NavItem href="/press">Press</NavItem>}
                 </div>
             )}
         </nav>
