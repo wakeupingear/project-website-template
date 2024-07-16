@@ -2,7 +2,7 @@ import React from 'react';
 import { useConfig } from './_app';
 import Factsheet from '@/src/components/press/Factsheet';
 import Section from '@/src/components/Section';
-import VideoEmbed from '@/src/components/VideoEmbed';
+import MediaEmbed from '@/src/components/MediaEmbed';
 
 export default function Press() {
     const {
@@ -11,7 +11,7 @@ export default function Press() {
     } = useConfig();
 
     if (!press) return null;
-    const { content, videos } = press;
+    const { content, videos, images } = press;
 
     return (
         <main className="flex flex-col">
@@ -36,14 +36,22 @@ export default function Press() {
                     <>
                         <h2>Videos</h2>
                         <div className="border-b-2 pb-8 gap-4">
-                            {videos.map((video, i) => (
-                                <VideoEmbed key={`video-${i}`} video={video} />
+                            {videos.map((media, i) => (
+                                <MediaEmbed key={`video-${i}`} media={media} />
                             ))}
                         </div>
                     </>
                 )}
-                <h2>Images</h2>
-                <div className="border-b-2"></div>
+                {images && images.length > 0 && (
+                    <>
+                        <h2>Images</h2>
+                        <div className="sm:grid-cols-3 md:grid-cols-4 grid grid-cols-2 gap-4">
+                            {images.map((media, i) => (
+                                <MediaEmbed key={`image-${i}`} media={media} />
+                            ))}
+                        </div>
+                    </>
+                )}
             </div>
         </main>
     );

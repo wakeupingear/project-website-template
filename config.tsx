@@ -65,6 +65,14 @@ const SITE_CONFIG: SiteConfig = {
             },
         ],
         videos: ['releaseTrailer'],
+        images: [
+            'screenshot1',
+            'screenshot2',
+            'screenshot3',
+            'screenshot4',
+            'screenshot5',
+            'screenshot6',
+        ],
     },
     linkEmbeds: {
         discord: {
@@ -108,6 +116,30 @@ const SITE_CONFIG: SiteConfig = {
         releaseTrailer: {
             name: 'Release Trailer',
             url: 'https://www.youtube.com/watch?v=UXZ7PWtJC0c',
+        },
+        screenshot1: {
+            name: 'Screenshot 1',
+            url: '/example/screenshots/Blood_Room.PNG',
+        },
+        screenshot2: {
+            name: 'Screenshot 2',
+            url: '/example/screenshots/Seminar.PNG',
+        },
+        screenshot3: {
+            name: 'Screenshot 3',
+            url: '/example/screenshots/Office.PNG',
+        },
+        screenshot4: {
+            name: 'Screenshot 4',
+            url: '/example/screenshots/LevelSelect.PNG',
+        },
+        screenshot5: {
+            name: 'Screenshot 5',
+            url: '/example/screenshots/Lobby.PNG',
+        },
+        screenshot6: {
+            name: 'Screenshot 6',
+            url: '/example/screenshots/Collectibles_Screen.PNG',
         },
     },
 };

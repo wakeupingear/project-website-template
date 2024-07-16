@@ -23,6 +23,7 @@ type _SocialLink = SocialLink | string;
 export type MediaEmbed = {
     url: string;
     name: string;
+    type?: 'video' | 'image';
 };
 type _MediaEmbed = MediaEmbed | string;
 
@@ -64,6 +65,7 @@ export type SiteConfig = {
     press?: {
         content: SiteSection[];
         videos?: _MediaEmbed[];
+        images?: _MediaEmbed[];
     };
     linkEmbeds?: Record<string, SocialLink>;
     mediaEmbeds?: Record<string, MediaEmbed>;

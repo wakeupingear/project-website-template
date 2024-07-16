@@ -2,6 +2,7 @@ import React from 'react';
 import {
     ExternalSite,
     GroupedContributors,
+    MediaEmbed,
     ProjectContributor,
     SiteConfig,
     SocialLink,
@@ -37,7 +38,8 @@ export const recursiveStringTransform = (
 };
 
 export type Schema<Input, Output> = {
-    [K in keyof Input & keyof Output]?: Input[K] extends object
+    [K in keyof Required<Input> &
+        keyof Output]?: Required<Input>[K] extends object
         ? Schema<Input[K], Output[K]>
         : Transform<Input[K], Output[K]>;
 };
@@ -62,6 +64,27 @@ export function applySchema<Input extends object, Output extends object>(
         return acc;
     }, (Array.isArray(original) ? [] : {}) as Output);
 }
+
+const transform_mediaEmbed: Transform<MediaEmbed | string> = (media) => {
+    if (typeof media === 'string') return media;
+    if (media.type) return media;
+
+    const url = media.url.toLowerCase();
+    if (
+        url.endsWith('.mp4') ||
+        [
+            'https://www.youtube.com/',
+            'https://youtu.be/',
+            'https://vimeo.com/',
+        ].some((prefix) => url.startsWith(prefix))
+    ) {
+        media.type = 'video';
+    } else if (url.endsWith('.png') || url.endsWith('.jpg')) {
+        media.type = 'image';
+    }
+
+    return media;
+};
 
 export const SOCIAL_LINK_PREFIXES: Record<string, ExternalSite> = {
     'https://www.youtube.com/': 'youtube',
@@ -125,9 +148,15 @@ export const SITE_CONFIG_SCHEMA: Schema<SiteConfig, TransformedSiteConfig> = {
         socialLinks: transform_socialLinks,
     },
     team: { contributors: transform_contributors },
-    linkEmbeds: (original) =>
+    press: {},
+    linkEmbeds: (original: Record<string, SocialLink>) =>
         Object.entries(original || {}).reduce((acc, [key, original]) => {
             acc[key] = transform_socialLink(original) as SocialLink;
             return acc;
         }, {} as Record<string, SocialLink>),
+    mediaEmbeds: (original: Record<string, MediaEmbed>) =>
+        Object.entries(original || {}).reduce((acc, [key, original]) => {
+            acc[key] = transform_mediaEmbed(original) as MediaEmbed;
+            return acc;
+        }, {} as Record<string, MediaEmbed>),
 };
