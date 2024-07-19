@@ -1,15 +1,20 @@
 import React from 'react';
 import {
+    _ProjectContributor,
     ExternalSite,
     GroupedContributors,
     MediaEmbed,
     ProjectContributor,
+    SchemaCache,
+    SchemaInput,
     SiteConfig,
     SocialLink,
+    TransformedSiteConfig,
 } from './types';
 
 type Transform<Input, Output = Input> = (
-    original: Input
+    original: Input,
+    cache: SchemaCache
 ) => Output extends (infer U)[] ? NonNullable<U>[] : Output;
 
 export const recursiveStringTransform = (
@@ -44,17 +49,18 @@ export type Schema<Input, Output> = {
         : Transform<Input[K], Output[K]>;
 };
 
-export function applySchema<Input extends object, Output extends object>(
+const _applySchema = <Input extends SchemaInput, Output extends object>(
     schema: Schema<Input, Output>,
-    original: Input
-): Output {
+    original: Input,
+    cache: SchemaCache
+): Output => {
     return Object.keys(original).reduce<Output>((acc, _key) => {
         const key = _key as keyof Input & keyof Output;
         const transform = schema[key];
         let val: any = original[key];
         if (transform) {
             if (typeof transform === 'function') {
-                val = (transform as Transform<any, any>)(original[key]);
+                val = (transform as Transform<any, any>)(original[key], cache);
             } else {
                 val = applySchema(transform as Schema<any, any>, original[key]);
             }
@@ -63,10 +69,48 @@ export function applySchema<Input extends object, Output extends object>(
 
         return acc;
     }, (Array.isArray(original) ? [] : {}) as Output);
-}
+};
 
-const transform_mediaEmbed: Transform<MediaEmbed | string> = (media) => {
-    if (typeof media === 'string') return media;
+export const applySchema = <Input extends SchemaInput, Output extends object>(
+    schema: Schema<Input, Output>,
+    original: Input,
+    cache?: SchemaCache
+): Output => {
+    let _cache: SchemaCache;
+    if (typeof cache === 'undefined') {
+        _cache = _applySchema(
+            (schema as any).cache,
+            original.cache as unknown as Input,
+            original.cache
+        ) as SchemaCache;
+    } else _cache = cache;
+
+    return Object.keys(original).reduce<Output>((acc, _key) => {
+        const key = _key as keyof Input & keyof Output;
+        const transform = schema[key];
+        let val: any = original[key];
+        if (transform) {
+            if (typeof transform === 'function') {
+                val = (transform as Transform<any, any>)(original[key], _cache);
+            } else {
+                val = applySchema(
+                    transform as Schema<any, any>,
+                    original[key],
+                    _cache
+                );
+            }
+        }
+        acc[key] = val;
+
+        return acc;
+    }, (Array.isArray(original) ? [] : {}) as Output);
+};
+
+const transform_mediaEmbed: Transform<MediaEmbed | string, MediaEmbed> = (
+    media,
+    cache
+) => {
+    if (typeof media === 'string') return cache.mediaEmbeds[media];
     if (media.type) return media;
 
     const url = media.url.toLowerCase();
@@ -101,8 +145,11 @@ export const SOCIAL_LINK_PREFIXES: Record<string, ExternalSite> = {
     'https://tiktok.com/@': 'tiktok',
     'https://www.linkedin.com/company/': 'linkedin',
 };
-const transform_socialLink: Transform<SocialLink | string> = (link) => {
-    if (typeof link === 'string') return link;
+const transform_socialLink: Transform<SocialLink | string, SocialLink> = (
+    link,
+    cache
+) => {
+    if (typeof link === 'string') return cache.linkEmbeds[link];
     if (link.site) return link;
 
     const prefix = Object.keys(SOCIAL_LINK_PREFIXES).find((prefix) =>
@@ -112,20 +159,27 @@ const transform_socialLink: Transform<SocialLink | string> = (link) => {
 
     return link;
 };
-const transform_socialLinks: Transform<(SocialLink | string)[] | undefined> = (
-    links
-) => links?.map(transform_socialLink);
+const transform_socialLinks: Transform<
+    (SocialLink | string)[] | undefined,
+    SocialLink[]
+> = (links, cache) =>
+    links?.map((link) => transform_socialLink(link, cache)) || [];
 
-const transform_contributor: Transform<ProjectContributor> = (contributor) => ({
+const transform_contributor: Transform<
+    _ProjectContributor,
+    ProjectContributor
+> = (contributor, cache) => ({
     ...contributor,
-    socialLinks: transform_socialLinks(contributor.socialLinks),
+    socialLinks: transform_socialLinks(contributor.socialLinks, cache),
 });
 const transform_contributors: Transform<
-    ProjectContributor[] | undefined,
+    _ProjectContributor[] | undefined,
     GroupedContributors
-> = (contributors) =>
+> = (contributors, cache) =>
     (
-        contributors?.map(transform_contributor) || []
+        contributors?.map((contributor) =>
+            transform_contributor(contributor, cache)
+        ) || []
     ).reduce<GroupedContributors>((acc, contributor) => {
         const key = contributor.department || 'Other';
         if (!acc[key]) acc[key] = [];
@@ -133,13 +187,29 @@ const transform_contributors: Transform<
         return acc;
     }, {});
 
-type Modify<T, R> = Omit<T, keyof R> & R;
-export type TransformedSiteConfig = Modify<
-    SiteConfig,
-    {
-        team: Modify<SiteConfig['team'], { contributors: GroupedContributors }>;
-    }
->;
+const transform_linkEmbedMap: Transform<Record<string, SocialLink>> = (
+    original,
+    cache
+) =>
+    Object.entries(original || {}).reduce((acc, [key, original]) => {
+        acc[key] = transform_socialLink(original, cache) as SocialLink;
+        return acc;
+    }, {} as Record<string, SocialLink>);
+
+const transform_mediaEmbedMap: Transform<Record<string, MediaEmbed>> = (
+    original,
+    cache
+) =>
+    Object.entries(original || {}).reduce((acc, [key, original]) => {
+        acc[key] = transform_mediaEmbed(original, cache) as MediaEmbed;
+        return acc;
+    }, {} as Record<string, MediaEmbed>);
+
+const transform_mediaEmbeds: Transform<
+    MediaEmbed[] | undefined,
+    MediaEmbed[]
+> = (original, cache) =>
+    original?.map((embed) => transform_mediaEmbed(embed, cache)) || [];
 
 export const SITE_CONFIG_SCHEMA: Schema<SiteConfig, TransformedSiteConfig> = {
     project: {
@@ -148,15 +218,12 @@ export const SITE_CONFIG_SCHEMA: Schema<SiteConfig, TransformedSiteConfig> = {
         socialLinks: transform_socialLinks,
     },
     team: { contributors: transform_contributors },
-    press: {},
-    linkEmbeds: (original: Record<string, SocialLink>) =>
-        Object.entries(original || {}).reduce((acc, [key, original]) => {
-            acc[key] = transform_socialLink(original) as SocialLink;
-            return acc;
-        }, {} as Record<string, SocialLink>),
-    mediaEmbeds: (original: Record<string, MediaEmbed>) =>
-        Object.entries(original || {}).reduce((acc, [key, original]) => {
-            acc[key] = transform_mediaEmbed(original) as MediaEmbed;
-            return acc;
-        }, {} as Record<string, MediaEmbed>),
+    press: {
+        images: transform_mediaEmbeds,
+        videos: transform_mediaEmbeds,
+    },
+    cache: {
+        linkEmbeds: transform_linkEmbedMap as any,
+        mediaEmbeds: transform_mediaEmbedMap as any,
+    },
 };

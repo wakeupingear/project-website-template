@@ -36,15 +36,29 @@ export type SiteSection = {
     bulletPoints?: boolean;
 };
 
-export type ProjectContributor = {
+export type _ProjectContributor = {
     name: string;
     role: string;
     socialLinks?: _SocialLink[];
     department?: string;
 };
+export type ProjectContributor = Modify<
+    _ProjectContributor,
+    { socialLinks: SocialLink[] }
+>;
 export type GroupedContributors = Record<string, ProjectContributor[]>;
 
-export type SiteConfig = {
+type Modify<T, R> = Omit<T, keyof R> & R;
+
+export type SchemaCache = {
+    linkEmbeds: Record<string, SocialLink>;
+    mediaEmbeds: Record<string, MediaEmbed>;
+};
+export interface SchemaInput {
+    cache: SchemaCache;
+}
+
+export interface SiteConfig extends SchemaInput {
     project: {
         name: string;
         logline: string;
@@ -57,16 +71,34 @@ export type SiteConfig = {
     team: {
         name: string;
         link?: string;
-        contributors?: ProjectContributor[];
+        contributors?: _ProjectContributor[];
     };
     homepage: {
         content: SiteSection[];
     };
-    press?: {
+    press: {
+        disabled?: boolean;
         content: SiteSection[];
         videos?: _MediaEmbed[];
         images?: _MediaEmbed[];
     };
-    linkEmbeds?: Record<string, SocialLink>;
-    mediaEmbeds?: Record<string, MediaEmbed>;
-};
+}
+
+export type TransformedSiteConfig = Modify<
+    SiteConfig,
+    {
+        project: Modify<
+            SiteConfig['project'],
+            {
+                platforms: SocialLink[];
+                ratings: SocialLink[];
+                socialLinks: SocialLink[];
+            }
+        >;
+        team: Modify<SiteConfig['team'], { contributors: GroupedContributors }>;
+        press: Modify<
+            SiteConfig['press'],
+            { images: MediaEmbed[]; videos: MediaEmbed[] }
+        >;
+    }
+>;

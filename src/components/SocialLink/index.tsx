@@ -38,23 +38,16 @@ const ICON_PROPS = {
 };
 
 export interface SocialLinkProps {
-    link: SocialLinkType | string;
+    link: SocialLinkType;
     hideText?: boolean;
     haveComma?: boolean;
 }
 
 export default function SocialLink({
-    link: _link,
+    link,
     hideText,
     haveComma,
 }: SocialLinkProps) {
-    let link = _link;
-    const { linkEmbeds = {} } = useConfig();
-    if (typeof link === 'string') {
-        if (link in linkEmbeds) link = linkEmbeds[link];
-        else return null;
-    }
-
     const { href, name, site } = link;
     const IconComponent = ICONS[site as ExternalSite];
 
@@ -75,7 +68,9 @@ export default function SocialLink({
                 </span>
                 {Boolean(!hideText || !IconComponent) && (name || site)}
             </a>
-            {haveComma && <span className="text-black !no-underline">, </span>}
+            {haveComma && (
+                <span className="text-black !no-underline">,&nbsp;</span>
+            )}
         </span>
     );
 }

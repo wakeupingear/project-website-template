@@ -74,72 +74,74 @@ const SITE_CONFIG: SiteConfig = {
             'screenshot6',
         ],
     },
-    linkEmbeds: {
-        discord: {
-            href: 'https://discord.gg/kp9hm5jB4Z',
-            name: 'Community Discord',
+    cache: {
+        linkEmbeds: {
+            discord: {
+                href: 'https://discord.gg/kp9hm5jB4Z',
+                name: 'Community Discord',
+            },
+            steam: {
+                href: 'https://store.steampowered.com/app/2795000/The_WereCleaner/',
+                name: 'Steam',
+            },
+            apple: {
+                href: 'https://apps.apple.com/us/app/the-werecleaner/id6478448519',
+                name: 'iOS & Mac',
+            },
+            twitter: {
+                href: 'https://x.com/The_WereCleaner',
+                name: 'Twitter',
+            },
+            youtube: {
+                href: 'https://www.youtube.com/@WereCleaner',
+                name: 'YouTube',
+            },
+            tiktok: {
+                href: 'https://tiktok.com/@the.werecleaner',
+                name: 'TikTok',
+            },
+            linkedin: {
+                href: 'https://www.linkedin.com/company/the-werecleaner',
+                name: 'LinkedIn',
+            },
+            tips: {
+                href: 'https://tiptopjar.com/thewerecleaner',
+                name: 'Tip Jar',
+            },
+            merch: {
+                href: 'https://www.redbubble.com/people/thewerecleaner/shop?asc=u',
+                name: 'Merch Store',
+            },
         },
-        steam: {
-            href: 'https://store.steampowered.com/app/2795000/The_WereCleaner/',
-            name: 'Steam',
-        },
-        apple: {
-            href: 'https://apps.apple.com/us/app/the-werecleaner/id6478448519',
-            name: 'iOS & Mac',
-        },
-        twitter: {
-            href: 'https://x.com/The_WereCleaner',
-            name: 'Twitter',
-        },
-        youtube: {
-            href: 'https://www.youtube.com/@WereCleaner',
-            name: 'YouTube',
-        },
-        tiktok: {
-            href: 'https://tiktok.com/@the.werecleaner',
-            name: 'TikTok',
-        },
-        linkedin: {
-            href: 'https://www.linkedin.com/company/the-werecleaner',
-            name: 'LinkedIn',
-        },
-        tips: {
-            href: 'https://tiptopjar.com/thewerecleaner',
-            name: 'Tip Jar',
-        },
-        merch: {
-            href: 'https://www.redbubble.com/people/thewerecleaner/shop?asc=u',
-            name: 'Merch Store',
-        },
-    },
-    mediaEmbeds: {
-        releaseTrailer: {
-            name: 'Release Trailer',
-            url: 'https://www.youtube.com/watch?v=UXZ7PWtJC0c',
-        },
-        screenshot1: {
-            name: 'Screenshot 1',
-            url: '/example/screenshots/Blood_Room.PNG',
-        },
-        screenshot2: {
-            name: 'Screenshot 2',
-            url: '/example/screenshots/Seminar.PNG',
-        },
-        screenshot3: {
-            name: 'Screenshot 3',
-            url: '/example/screenshots/Office.PNG',
-        },
-        screenshot4: {
-            name: 'Screenshot 4',
-            url: '/example/screenshots/LevelSelect.PNG',
-        },
-        screenshot5: {
-            name: 'Screenshot 5',
-            url: '/example/screenshots/Lobby.PNG',
-        },
-        screenshot6: {
-            name: 'Screenshot 6',
-            url: '/example/screenshots/Collectibles_Screen.PNG',
+        mediaEmbeds: {
+            releaseTrailer: {
+                name: 'Release Trailer',
+                url: 'https://www.youtube.com/watch?v=UXZ7PWtJC0c',
+            },
+            screenshot1: {
+                name: 'Screenshot 1',
+                url: '/example/screenshots/Blood_Room.PNG',
+            },
+            screenshot2: {
+                name: 'Screenshot 2',
+                url: '/example/screenshots/Seminar.PNG',
+            },
+            screenshot3: {
+                name: 'Screenshot 3',
+                url: '/example/screenshots/Office.PNG',
+            },
+            screenshot4: {
+                name: 'Screenshot 4',
+                url: '/example/screenshots/LevelSelect.PNG',
+            },
+            screenshot5: {
+                name: 'Screenshot 5',
+                url: '/example/screenshots/Lobby.PNG',
+            },
+            screenshot6: {
+                name: 'Screenshot 6',
+                url: '/example/screenshots/Collectibles_Screen.PNG',
+            },
         },
     },
 };

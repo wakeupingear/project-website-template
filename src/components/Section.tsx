@@ -22,9 +22,7 @@ export default function Section({
         return (
             <Fragment key={index}>
                 {isList ? (
-                    <li className="list-disc list-inside text-nowrap">
-                        {children}
-                    </li>
+                    <li className="list-disc list-inside">{children}</li>
                 ) : (
                     children
                 )}

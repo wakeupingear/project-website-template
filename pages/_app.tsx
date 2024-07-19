@@ -3,7 +3,6 @@ import {
     applySchema,
     recursiveStringTransform,
     SITE_CONFIG_SCHEMA,
-    TransformedSiteConfig,
 } from '@/src/utils/schemas';
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
@@ -12,6 +11,7 @@ import Head from 'next/head';
 import { createContext, useContext, useMemo } from 'react';
 import SITE_CONFIG from '@/config';
 import SocialLink from '@/src/components/SocialLink';
+import { TransformedSiteConfig } from '@/src/utils/types';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,9 +23,9 @@ export default function App({ Component, pageProps }: AppProps) {
     const configValues = useMemo(() => {
         let transformedData = applySchema(SITE_CONFIG_SCHEMA, SITE_CONFIG);
 
-        if (transformedData.linkEmbeds) {
+        if (transformedData.cache.linkEmbeds) {
             const patternsToMatch = Object.entries(
-                transformedData.linkEmbeds
+                transformedData.cache.linkEmbeds
             ).reduce((acc, [key, value], i) => {
                 acc[key] = () => {
                     return <SocialLink link={value} key={`link-${i}`} />;

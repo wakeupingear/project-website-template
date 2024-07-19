@@ -23,7 +23,7 @@ export default function Factsheet() {
     } = useConfig();
 
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 min-w-[12rem]">
             <h2>Factsheet</h2>
             <FactEntry title="Created By">
                 {teamLink ? (
