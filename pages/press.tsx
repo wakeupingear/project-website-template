@@ -4,10 +4,12 @@ import Factsheet from '@/src/components/press/Factsheet';
 import Section from '@/src/components/Section';
 import MediaEmbed from '@/src/components/MediaEmbed';
 import { GalleryWrapper } from '@/src/hooks/useGallery';
+import ImageEmbed from '@/src/components/MediaEmbed/ImageEmbed';
+import Link from 'next/link';
 
 export default function Press() {
     const {
-        project: { description, logo },
+        project: { description, logo, name },
         press,
     } = useConfig();
 
@@ -18,7 +20,21 @@ export default function Press() {
 
     return (
         <main className="flex flex-col">
-            <div className="bg-gray-300 w-full min-h-32"></div>
+            <div className="bg-gray-300 w-full h-32 flex p-4 items-center gap-4">
+                {Boolean(logo) && logo && (
+                    <Link className="h-full w-32 relative" href="/">
+                        <ImageEmbed
+                            media={logo}
+                            imageProps={{
+                                fill: true,
+                            }}
+                        />
+                    </Link>
+                )}
+                <h1 className="text-4xl">
+                    <b>{name}</b> - Press Kit
+                </h1>
+            </div>
             <div className="flex flex-col p-8 gap-8">
                 <div className="flex flex-col gap-8 max-width-content">
                     <div className="flex gap-8">
@@ -82,7 +98,7 @@ export default function Press() {
                                     <MediaEmbed
                                         key={`image-${i}`}
                                         media={media}
-                                        defaultName={`Logo${
+                                        defaultName={`${name} Logo${
                                             logos.length > 1 ? ` ${i + 1}` : ''
                                         }`}
                                     />

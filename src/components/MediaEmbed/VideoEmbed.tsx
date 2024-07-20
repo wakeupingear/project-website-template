@@ -1,14 +1,24 @@
-import { MediaEmbed } from '@/src/utils/types';
 import dynamic from 'next/dynamic';
 import React from 'react';
+import { MediaEmbedProps } from '.';
 const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
 
-interface VideoEmbedProps {
-    media: MediaEmbed;
-}
+interface VideoEmbedProps extends MediaEmbedProps {}
 
-export default function VideoEmbed({ media }: VideoEmbedProps) {
-    const { name, url } = media;
+export default function VideoEmbed({
+    media: _media,
+    defaultName,
+}: VideoEmbedProps) {
+    const { url, type } = _media;
+    const media = {
+        ..._media,
+        name:
+            _media.name ||
+            defaultName ||
+            (type === 'image' ? 'Image' : type === 'video' ? 'Video' : 'Media'),
+    };
+    const { name } = media;
+    if (type !== 'video') return null;
 
     return (
         <div className="flex flex-col gap-2">

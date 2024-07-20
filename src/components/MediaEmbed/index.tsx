@@ -3,23 +3,13 @@ import React from 'react';
 import VideoEmbed from './VideoEmbed';
 import ImageEmbed from './ImageEmbed';
 
-type MediaEmbedProps = {
+export type MediaEmbedProps = {
     media: MediaEmbedType;
     defaultName?: string;
 };
 
-export default function MediaEmbed({
-    media: _media,
-    defaultName,
-}: MediaEmbedProps) {
-    const { type, name: _name } = _media;
-    const media = {
-        ..._media,
-        name:
-            _name ||
-            defaultName ||
-            (type === 'image' ? 'Image' : type === 'video' ? 'Video' : 'Media'),
-    };
+export default function MediaEmbed({ media }: MediaEmbedProps) {
+    const { type, name: _name } = media;
 
     if (type === 'image') return <ImageEmbed media={media} />;
     if (type === 'video') return <VideoEmbed media={media} />;

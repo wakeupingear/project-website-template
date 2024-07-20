@@ -86,14 +86,16 @@ export function GalleryWrapper({ children, urls }: GalleryWrapperProps) {
     };
 
     useEffect(() => {
-        if (currentUrl && !onlyOne) {
+        if (currentUrl) {
             const handleKeyDown = (e: KeyboardEvent) => {
                 if (e.key === 'Escape') {
                     close();
-                } else if (e.key === 'ArrowLeft') {
-                    iterateUrl('prev');
-                } else if (e.key === 'ArrowRight') {
-                    iterateUrl('next');
+                } else if (onlyOne) {
+                    if (e.key === 'ArrowLeft') {
+                        iterateUrl('prev');
+                    } else if (e.key === 'ArrowRight') {
+                        iterateUrl('next');
+                    }
                 }
             };
 
@@ -269,14 +271,17 @@ interface UseGalleryReturn {
 const useGallery = (
     url: string,
     imageRef: React.RefObject<HTMLImageElement>
-): UseGalleryReturn => {
+): UseGalleryReturn | null => {
     const data = useContext(GalleryContext);
-    const { currentUrl, openUrl, close, registerUrl } = data;
+
+    const { currentUrl, openUrl, close, registerUrl } = data || {};
     const open = currentUrl === url;
 
     useEffect(() => {
-        registerUrl(url, imageRef);
+        registerUrl?.(url, imageRef);
     }, [url, imageRef]);
+
+    if (!data || !Object.keys(data).length) return null;
 
     const setOpen = (open: boolean) => {
         if (open) {
