@@ -7,12 +7,14 @@ import { GalleryWrapper } from '@/src/hooks/useGallery';
 
 export default function Press() {
     const {
-        project: { description },
+        project: { description, logo },
         press,
     } = useConfig();
 
-    const { content, videos, images, disabled } = press;
+    const { content, videos, images, disabled, logos: _logos } = press;
     if (disabled) return null;
+
+    const logos = _logos ? _logos : logo ? [logo] : [];
 
     return (
         <main className="flex flex-col">
@@ -40,7 +42,13 @@ export default function Press() {
                         <h2 className="border-t-2 pt-8">Videos</h2>
                         <div className="gap-4">
                             {videos.map((media, i) => (
-                                <MediaEmbed key={`video-${i}`} media={media} />
+                                <MediaEmbed
+                                    key={`video-${i}`}
+                                    media={media}
+                                    defaultName={`Video${
+                                        videos.length > 1 ? ` ${i + 1}` : ''
+                                    }`}
+                                />
                             ))}
                         </div>
                     </>
@@ -54,6 +62,29 @@ export default function Press() {
                                     <MediaEmbed
                                         key={`image-${i}`}
                                         media={media}
+                                        defaultName={`Image ${
+                                            images.length > 1 ? ` ${i + 1}` : ''
+                                        }`}
+                                    />
+                                ))}
+                            </GalleryWrapper>
+                        </div>
+                    </>
+                )}
+                {logos.length > 0 && (
+                    <>
+                        <h2 className="border-t-2 pt-8">
+                            Logo{logos.length > 1 && 's'}
+                        </h2>
+                        <div className="sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 grid grid-cols-2 gap-4">
+                            <GalleryWrapper urls={logos}>
+                                {logos.map((media, i) => (
+                                    <MediaEmbed
+                                        key={`image-${i}`}
+                                        media={media}
+                                        defaultName={`Logo${
+                                            logos.length > 1 ? ` ${i + 1}` : ''
+                                        }`}
                                     />
                                 ))}
                             </GalleryWrapper>

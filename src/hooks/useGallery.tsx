@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { MediaEmbed } from '../utils/types';
 import clsx from 'clsx';
 import { BiArrowBack, BiDownload, BiX } from 'react-icons/bi';
+import { imageIsTransparent } from '../utils';
 
 const CONTENT_PX = 64,
     CONTENT_PY = 64;
@@ -27,6 +28,7 @@ interface GalleryWrapperProps {
 }
 
 export function GalleryWrapper({ children, urls }: GalleryWrapperProps) {
+    const onlyOne = urls.length === 1;
     const [imageRefs, setImageRefs] = useState<
         Record<string, React.RefObject<HTMLImageElement>>
     >({});
@@ -84,7 +86,7 @@ export function GalleryWrapper({ children, urls }: GalleryWrapperProps) {
     };
 
     useEffect(() => {
-        if (currentUrl) {
+        if (currentUrl && !onlyOne) {
             const handleKeyDown = (e: KeyboardEvent) => {
                 if (e.key === 'Escape') {
                     close();
@@ -98,7 +100,7 @@ export function GalleryWrapper({ children, urls }: GalleryWrapperProps) {
             window.addEventListener('keydown', handleKeyDown);
             return () => window.removeEventListener('keydown', handleKeyDown);
         }
-    }, [currentUrl]);
+    }, [currentUrl, onlyOne]);
 
     useEffect(() => {
         const prevUrlValue = prevUrl.current;
@@ -186,18 +188,22 @@ export function GalleryWrapper({ children, urls }: GalleryWrapperProps) {
                         }
                     )}
                 >
-                    <button
-                        onClick={(e) => iterateUrl('prev', e)}
-                        style={{ width: CONTENT_PX }}
-                    >
-                        <BiArrowBack />
-                    </button>
-                    <button
-                        onClick={(e) => iterateUrl('next', e)}
-                        style={{ width: CONTENT_PX }}
-                    >
-                        <BiArrowBack className="rotate-180" />
-                    </button>
+                    {!onlyOne && (
+                        <>
+                            <button
+                                onClick={(e) => iterateUrl('prev', e)}
+                                style={{ width: CONTENT_PX }}
+                            >
+                                <BiArrowBack />
+                            </button>
+                            <button
+                                onClick={(e) => iterateUrl('next', e)}
+                                style={{ width: CONTENT_PX }}
+                            >
+                                <BiArrowBack className="rotate-180" />
+                            </button>
+                        </>
+                    )}
                     <button
                         onClick={close}
                         className="fixed top-4 right-4 !h-fit"
@@ -216,25 +222,28 @@ export function GalleryWrapper({ children, urls }: GalleryWrapperProps) {
                                 src={url}
                                 alt="hi"
                                 className={clsx(
-                                    'shadow-lg overflow-hidden object-contain transition-all duration-300',
+                                    'overflow-hidden object-contain transition-all duration-300',
                                     {
                                         'rounded-3xl': !open,
+                                        'shadow-lg': !imageIsTransparent(url),
                                     }
                                 )}
                             />
                             <div
                                 className={clsx(
-                                    'absolute -bottom-8 left-0 w-full flex items-center justify-between text-white',
+                                    'absolute -bottom-8 left-0 w-full flex items-center text-white transition-all duration-300',
                                     {
                                         'opacity-0': !open,
                                     }
                                 )}
                             >
-                                <p>
-                                    {index + 1} / {urls.length}
-                                </p>
+                                {!onlyOne && (
+                                    <p>
+                                        {index + 1} / {urls.length}
+                                    </p>
+                                )}
                                 <a
-                                    className="underline inline-flex items-center gap-2"
+                                    className="underline inline-flex items-center gap-2 ml-auto"
                                     href={url}
                                     target="_blank"
                                     rel="noopener noreferrer"

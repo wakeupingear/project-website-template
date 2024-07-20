@@ -28,7 +28,7 @@ export default function Factsheet() {
             <FactEntry title="Created By">
                 {teamLink ? (
                     <a
-                        href={teamLink}
+                        href={teamLink.href}
                         target="_blank"
                         rel="noreferrer"
                         className="text-link"

@@ -10,6 +10,7 @@ const SITE_CONFIG: SiteConfig = {
             'The WereCleaner is a stealth-comedy game about cleaning messes and fighting your own instincts. You play as Kyle, a Werewolf-Janitor working the night shift to pay his rent. Explore an ever-expanding office space and master an arsenal of gadgets to clean the office of messes, accidents... and the carnage of your own ongoing rampage.',
         platforms: ['steam', 'apple'],
         socialLinks: ['discord', 'twitter', 'youtube', 'tiktok', 'linkedin'],
+        logo: '/example/logo.png',
     },
     team: {
         name: "Howlin' Hugs",
@@ -18,7 +19,6 @@ const SITE_CONFIG: SiteConfig = {
                 name: 'Example Contributor 1',
                 role: 'Programmer',
                 department: 'Engineering',
-                socialLinks: ['abby'],
             },
             {
                 name: 'Example Contributor 2',
@@ -28,10 +28,10 @@ const SITE_CONFIG: SiteConfig = {
                     {
                         href: 'https://twitter.com/',
                     },
-                    'abby',
                 ],
             },
         ],
+        link: 'twitter',
     },
     homepage: {
         content: [
@@ -39,7 +39,7 @@ const SITE_CONFIG: SiteConfig = {
                 id: 'about',
                 title: 'About',
                 content: [
-                    'This is an example game about {{abby}}.',
+                    'This is an example game about.',
                     'This is an example game.',
                 ],
             },

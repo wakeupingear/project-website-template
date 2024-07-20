@@ -67,6 +67,7 @@ export interface SiteConfig extends SchemaInput {
         platforms?: _SocialLink[];
         ratings?: _SocialLink[];
         socialLinks?: _SocialLink[];
+        logo?: _MediaEmbed;
     };
     team: {
         name: string;
@@ -74,6 +75,7 @@ export interface SiteConfig extends SchemaInput {
         contributors?: _ProjectContributor[];
     };
     homepage: {
+        links?: _SocialLink[];
         content: SiteSection[];
     };
     press: {
@@ -81,6 +83,7 @@ export interface SiteConfig extends SchemaInput {
         content: SiteSection[];
         videos?: _MediaEmbed[];
         images?: _MediaEmbed[];
+        logos?: _MediaEmbed[];
     };
 }
 
@@ -93,12 +96,17 @@ export type TransformedSiteConfig = Modify<
                 platforms: SocialLink[];
                 ratings: SocialLink[];
                 socialLinks: SocialLink[];
+                logo?: MediaEmbed;
             }
         >;
-        team: Modify<SiteConfig['team'], { contributors: GroupedContributors }>;
+        team: Modify<
+            SiteConfig['team'],
+            { contributors: GroupedContributors; link?: SocialLink }
+        >;
+        homepage: Modify<SiteConfig['homepage'], { links?: SocialLink[] }>;
         press: Modify<
             SiteConfig['press'],
-            { images: MediaEmbed[]; videos: MediaEmbed[] }
+            { images: MediaEmbed[]; videos: MediaEmbed[]; logos: MediaEmbed[] }
         >;
     }
 >;

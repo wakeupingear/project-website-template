@@ -3,7 +3,7 @@ import React from 'react';
 import SocialLink, { SocialLinkProps } from '.';
 
 interface SocialLinkRowProps extends Omit<SocialLinkProps, 'link'> {
-    links: (SocialLinkType | string)[];
+    links: SocialLinkType[];
 }
 
 export default function SocialLinkRow({ links, ...rest }: SocialLinkRowProps) {

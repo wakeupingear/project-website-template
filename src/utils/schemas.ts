@@ -11,6 +11,7 @@ import {
     SocialLink,
     TransformedSiteConfig,
 } from './types';
+import { isImage, isUrl, isVideo } from '.';
 
 type Transform<Input, Output = Input> = (
     original: Input,
@@ -106,26 +107,27 @@ export const applySchema = <Input extends SchemaInput, Output extends object>(
     }, (Array.isArray(original) ? [] : {}) as Output);
 };
 
-const transform_mediaEmbed: Transform<MediaEmbed | string, MediaEmbed> = (
-    media,
-    cache
-) => {
-    if (typeof media === 'string') return cache.mediaEmbeds[media];
+const transform_mediaEmbed: Transform<
+    MediaEmbed | string | undefined,
+    MediaEmbed | undefined
+> = (media, cache) => {
+    if (!media) return undefined;
+    if (typeof media === 'string') {
+        const embed = cache.mediaEmbeds[media];
+        if (embed) return embed;
+
+        if (isUrl(media) || isImage(media)) {
+            console.warn(
+                `No media embed for ${media}; this leads to accessibility issues.`
+            );
+            media = { url: media, name: '' };
+        } else throw new Error(`Unknown media embed: ${media}`);
+    }
     if (media.type) return media;
 
     const url = media.url.toLowerCase();
-    if (
-        url.endsWith('.mp4') ||
-        [
-            'https://www.youtube.com/',
-            'https://youtu.be/',
-            'https://vimeo.com/',
-        ].some((prefix) => url.startsWith(prefix))
-    ) {
-        media.type = 'video';
-    } else if (url.endsWith('.png') || url.endsWith('.jpg')) {
-        media.type = 'image';
-    }
+    if (isVideo(url)) media.type = 'video';
+    else if (isImage(url)) media.type = 'image';
 
     return media;
 };
@@ -145,11 +147,27 @@ export const SOCIAL_LINK_PREFIXES: Record<string, ExternalSite> = {
     'https://tiktok.com/@': 'tiktok',
     'https://www.linkedin.com/company/': 'linkedin',
 };
-const transform_socialLink: Transform<SocialLink | string, SocialLink> = (
-    link,
-    cache
-) => {
-    if (typeof link === 'string') return cache.linkEmbeds[link];
+const transform_socialLink: Transform<
+    SocialLink | string | undefined,
+    SocialLink | undefined
+> = (link, cache) => {
+    if (!link) return undefined;
+    if (typeof link === 'string') {
+        const site = cache.linkEmbeds[link];
+        if (site) return site;
+
+        const prefix = Object.keys(SOCIAL_LINK_PREFIXES).find((prefix) =>
+            (link as string).startsWith(prefix)
+        );
+        if (prefix) {
+            const site = SOCIAL_LINK_PREFIXES[prefix];
+            return { href: link, site };
+        }
+
+        if (link.startsWith('https://' || link.startsWith('http://')))
+            link = { href: link };
+        else throw new Error(`Unknown link: ${link}`);
+    }
     if (link.site) return link;
 
     const prefix = Object.keys(SOCIAL_LINK_PREFIXES).find((prefix) =>
@@ -163,7 +181,9 @@ const transform_socialLinks: Transform<
     (SocialLink | string)[] | undefined,
     SocialLink[]
 > = (links, cache) =>
-    links?.map((link) => transform_socialLink(link, cache)) || [];
+    (links
+        ?.map((link) => transform_socialLink(link, cache))
+        .filter(Boolean) as SocialLink[]) || [];
 
 const transform_contributor: Transform<
     _ProjectContributor,
@@ -209,18 +229,22 @@ const transform_mediaEmbeds: Transform<
     MediaEmbed[] | undefined,
     MediaEmbed[]
 > = (original, cache) =>
-    original?.map((embed) => transform_mediaEmbed(embed, cache)) || [];
+    (original
+        ?.map((embed) => transform_mediaEmbed(embed, cache))
+        .filter(Boolean) as MediaEmbed[]) || [];
 
 export const SITE_CONFIG_SCHEMA: Schema<SiteConfig, TransformedSiteConfig> = {
     project: {
         platforms: transform_socialLinks,
         ratings: transform_socialLinks,
         socialLinks: transform_socialLinks,
+        logo: transform_mediaEmbed,
     },
-    team: { contributors: transform_contributors },
+    team: { contributors: transform_contributors, link: transform_socialLink },
     press: {
         images: transform_mediaEmbeds,
         videos: transform_mediaEmbeds,
+        logos: transform_mediaEmbeds,
     },
     cache: {
         linkEmbeds: transform_linkEmbedMap as any,

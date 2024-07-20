@@ -21,7 +21,7 @@ export default function Footer() {
                     &copy; {new Date().getFullYear()}{' '}
                     {teamLink ? (
                         <Link
-                            href={teamLink}
+                            href={teamLink.href}
                             target="_blank"
                             rel="noreferrer"
                             className="text-link"
