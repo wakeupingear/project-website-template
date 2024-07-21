@@ -90,7 +90,7 @@ export function GalleryWrapper({ children, urls }: GalleryWrapperProps) {
             const handleKeyDown = (e: KeyboardEvent) => {
                 if (e.key === 'Escape') {
                     close();
-                } else if (onlyOne) {
+                } else if (!onlyOne) {
                     if (e.key === 'ArrowLeft') {
                         iterateUrl('prev');
                     } else if (e.key === 'ArrowRight') {

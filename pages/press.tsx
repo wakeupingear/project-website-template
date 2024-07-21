@@ -39,9 +39,14 @@ export default function Press() {
                 <div className="flex flex-col gap-8 max-width-content">
                     <div className="flex gap-8">
                         <Factsheet />
-                        <div className="flex flex-col gap-4">
-                            <h2>Description</h2>
-                            <p>{description}</p>
+                        <div className="flex flex-col gap-8">
+                            <Section
+                                section={{
+                                    id: '__description',
+                                    content: [description],
+                                    title: 'Description',
+                                }}
+                            />
                             {Boolean(content?.length) &&
                                 content &&
                                 content.map((section) => (

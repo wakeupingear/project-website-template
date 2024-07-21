@@ -19,7 +19,7 @@ function FactEntry({ title, children }: FactEntryProps) {
 export default function Factsheet() {
     const {
         team: { name: teamName, link: teamLink },
-        project: { releaseDate, platforms, ratings, socialLinks },
+        project: { releaseDateStr, platforms, ratings, socialLinks },
     } = useConfig();
 
     return (
@@ -40,13 +40,7 @@ export default function Factsheet() {
                 )}
             </FactEntry>
             <FactEntry title="Release Date">
-                {!releaseDate
-                    ? 'TBD'
-                    : typeof releaseDate === 'number'
-                    ? new Date(releaseDate).toLocaleDateString()
-                    : typeof releaseDate === 'string'
-                    ? releaseDate
-                    : releaseDate.toLocaleDateString()}
+                {releaseDateStr || 'TBD'}
             </FactEntry>
             {Boolean(platforms?.length) && platforms && (
                 <FactEntry title="Platforms">

@@ -18,30 +18,35 @@ export default function Home() {
         <>
             <Navbar />
             <main>
-                <div className="bg-blue-300 h-screen w-full flex items-center justify-center flex-col gap-4">
-                    {logo ? (
-                        <div className="relative h-96 aspect-square">
-                            <ImageEmbed
-                                media={logo}
-                                defaultName={gameName}
-                                imageProps={{
-                                    fill: true,
-                                }}
-                            />
-                        </div>
-                    ) : null}
-                    <p className="text-lg">{logline}</p>
-                    <SocialCardColumn links={socialLinks} className="mt-8" />
-                    {hasMainContent && (
-                        <Link
-                            className="absolute bottom-4"
-                            href={`#${content[0]?.id}`}
-                        >
-                            <FaCaretDown size={48} />
-                        </Link>
-                    )}
+                <div className="bg-blue-300 min-h-screen w-full flex items-center justify-between flex-col gap-4">
+                    <div />
+                    <div className="flex flex-col gap-4">
+                        {logo ? (
+                            <div className="relative h-96 aspect-square">
+                                <ImageEmbed
+                                    media={logo}
+                                    defaultName={gameName}
+                                    imageProps={{
+                                        fill: true,
+                                    }}
+                                />
+                            </div>
+                        ) : null}
+                        <p className="text-lg">{logline}</p>
+                        <SocialCardColumn
+                            links={socialLinks}
+                            className="mt-8"
+                        />
+                    </div>
+                    <div className="mb-4">
+                        {hasMainContent && (
+                            <Link href={`#${content[0]?.id}`}>
+                                <FaCaretDown size={48} />
+                            </Link>
+                        )}
+                    </div>
                 </div>
-                <div className="flex flex-col gap-12 mt-4">
+                <div className="flex flex-col gap-12">
                     {hasMainContent && (
                         <div className="homepage-content flex flex-col gap-12 pt-12">
                             {content.map((section) => (

@@ -4,12 +4,14 @@ import SocialIcon, { siteHasIcon } from './SocialIcon';
 export interface SocialLinkProps {
     link: SocialLink;
     hideText?: boolean;
+    hideLogo?: boolean;
     haveComma?: boolean;
 }
 
 export default function SocialLink({
     link,
     hideText,
+    hideLogo,
     haveComma,
 }: SocialLinkProps) {
     const { href, name, site } = link;
@@ -22,8 +24,8 @@ export default function SocialLink({
                 rel="noreferrer"
                 className="text-link text-red"
             >
-                <SocialIcon site={site} />
-                {Boolean(!hideText || !siteHasIcon(site)) &&
+                {!hideLogo && <SocialIcon site={site} />}
+                {Boolean(!hideLogo || !hideText || !siteHasIcon(site)) &&
                     (name ||
                         (site
                             ? site[0].toUpperCase() + site.slice(1)

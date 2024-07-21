@@ -18,23 +18,42 @@ type Transform<Input, Output = Input> = (
     cache: SchemaCache
 ) => Output extends (infer U)[] ? NonNullable<U>[] : Output;
 
+const IGNORED_STRING_TRANSFORM_KEYS = [
+    'url',
+    'cache',
+    'name',
+    'logline',
+    'logo',
+    'contributors',
+    'link',
+    'id',
+    'title',
+    'videos',
+    'images',
+    'logos',
+];
+
 export const recursiveStringTransform = (
     obj: any,
     transform: (original: string) => string | React.ReactNode
 ): any => {
     if (typeof obj === 'string') {
-        return transform(obj);
+        return obj ? transform(obj) : '';
     }
 
     if (Array.isArray(obj)) {
         return obj.map((item) => recursiveStringTransform(item, transform));
     }
 
-    if (typeof obj === 'object' && obj !== null) {
+    if (typeof obj === 'object' && obj !== null && !(obj instanceof Date)) {
         const result: { [key: string]: any } = {};
         for (const key in obj) {
             if (Object.prototype.hasOwnProperty.call(obj, key)) {
-                result[key] = recursiveStringTransform(obj[key], transform);
+                result[key] = !IGNORED_STRING_TRANSFORM_KEYS.some((k) =>
+                    key.toLowerCase().includes(k)
+                )
+                    ? recursiveStringTransform(obj[key], transform)
+                    : obj[key];
             }
         }
         return result;
@@ -77,6 +96,10 @@ export const applySchema = <Input extends SchemaInput, Output extends object>(
     original: Input,
     cache?: SchemaCache
 ): Output => {
+    if (!original) {
+        console.trace();
+        throw new Error('No original data');
+    }
     let _cache: SchemaCache;
     if (typeof cache === 'undefined') {
         _cache = _applySchema(

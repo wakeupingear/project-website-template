@@ -33,7 +33,6 @@ export type SiteSection = {
     shortTitle?: string;
     content: (string | React.ReactNode)[];
     hideInNav?: boolean;
-    bulletPoints?: boolean;
 };
 
 export type _ProjectContributor = {
@@ -97,6 +96,7 @@ export type TransformedSiteConfig = Modify<
                 ratings: SocialLink[];
                 socialLinks: SocialLink[];
                 logo?: MediaEmbed;
+                releaseDateStr?: string;
             }
         >;
         team: Modify<

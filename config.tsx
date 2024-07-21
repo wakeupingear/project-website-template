@@ -7,10 +7,11 @@ const SITE_CONFIG: SiteConfig = {
         logline:
             "Kyle is a Janitor. He's also a Werewolf. And now he's got the night shift.",
         description:
-            'The WereCleaner is a stealth-comedy game about cleaning messes and fighting your own instincts. You play as Kyle, a Werewolf-Janitor working the night shift to pay his rent. Explore an ever-expanding office space and master an arsenal of gadgets to clean the office of messes, accidents... and the carnage of your own ongoing rampage.',
+            '{{project}} is a stealth-comedy game about cleaning messes and fighting your own instincts. You play as **Kyle**, a Werewolf-Janitor working the night shift to pay his rent. Explore an ever-expanding office space and master an arsenal of gadgets to clean the office of messes, accidents... and the carnage of your own ongoing rampage.',
         platforms: ['steam', 'apple'],
         socialLinks: ['discord', 'twitter', 'youtube', 'tiktok', 'linkedin'],
         logo: '/example/logo.png',
+        releaseDate: new Date(2024, 5, 7),
     },
     team: {
         name: "Howlin' Hugs",
@@ -39,7 +40,7 @@ const SITE_CONFIG: SiteConfig = {
                 id: 'about',
                 title: 'About',
                 content: [
-                    'This is an example game about.',
+                    'This is an example game{{game}} about.',
                     'This is an example game.',
                 ],
             },
@@ -56,12 +57,18 @@ const SITE_CONFIG: SiteConfig = {
                 id: 'features',
                 title: 'Features',
                 content: [
-                    'One unique and interconnected game world, filled with secret routes and handcrafted details',
-                    'A dynamic NPC system, with dozens of characters to avoid, trick or kill if needed',
-                    '7 levels of wacky scenarios, shifting layouts, and hilarious surprises',
-                    '3 multipurpose tools to dispose of every kind of mess - intentional or not',
+                    `* One unique and interconnected game world, filled with secret routes and handcrafted details
+* A dynamic NPC system, with dozens of characters to avoid, trick or kill if needed
+* 7 levels of wacky scenarios, shifting layouts, and hilarious surprises
+* 3 multipurpose tools to dispose of every kind of mess - intentional or not`,
                 ],
-                bulletPoints: true,
+            },
+            {
+                id: 'history',
+                title: 'About the Team',
+                content: [
+                    '{{team}} is a student game team based out of {{uscgames}}. We created {{project}} as our capstone project, and we hope you enjoy it!',
+                ],
             },
         ],
         videos: ['releaseTrailer'],
@@ -111,6 +118,10 @@ const SITE_CONFIG: SiteConfig = {
             merch: {
                 href: 'https://www.redbubble.com/people/thewerecleaner/shop?asc=u',
                 name: 'Merch Store',
+            },
+            uscgames: {
+                href: 'https://games.usc.edu/',
+                name: 'USC Games',
             },
         },
         mediaEmbeds: {
