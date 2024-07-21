@@ -25,7 +25,7 @@ export default function SocialLink({
                 className="text-link text-red"
             >
                 {!hideLogo && <SocialIcon site={site} />}
-                {Boolean(!hideLogo || !hideText || !siteHasIcon(site)) &&
+                {Boolean(hideLogo || !hideText || !siteHasIcon(site)) &&
                     (name ||
                         (site
                             ? site[0].toUpperCase() + site.slice(1)

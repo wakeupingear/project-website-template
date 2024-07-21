@@ -5,7 +5,7 @@ import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { MediaEmbed } from '../utils/types';
 import clsx from 'clsx';
 import { BiArrowBack, BiDownload, BiX } from 'react-icons/bi';
-import { imageIsTransparent } from '../utils';
+import { imageIsTransparent } from '../utils/media';
 
 const CONTENT_PX = 64,
     CONTENT_PY = 64;

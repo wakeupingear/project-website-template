@@ -1,11 +1,11 @@
 import React from 'react';
 import Contributor from './Contributor';
-import getConfig from '@/src/lib/getConfig';
+import { SiteContent } from '@/src/utils/types';
 
-export default function Credits() {
+export default function Credits({ config }: SiteContent) {
     const {
         team: { contributors },
-    } = getConfig();
+    } = config;
 
     return (
         <div className="flex flex-col gap-4">

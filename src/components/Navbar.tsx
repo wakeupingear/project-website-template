@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
-import getConfig from '../lib/getConfig';
+import { SiteContent } from '../utils/types';
 
 interface NavItemProps {
     href: string;
@@ -15,11 +15,11 @@ function NavItem({ href, children }: NavItemProps) {
     );
 }
 
-export default function Navbar() {
+export default function Navbar({ config }: SiteContent) {
     const {
         homepage: { content },
         press,
-    } = getConfig();
+    } = config;
     const navItems = content.filter(({ hideInNav }) => !hideInNav);
 
     return (

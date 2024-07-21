@@ -11,7 +11,7 @@ import {
     SocialLink,
     TransformedSiteConfig,
 } from './types';
-import { isImage, isUrl, isVideo } from '.';
+import { isImage, isUrl, isVideo } from './media';
 
 type Transform<Input, Output = Input> = (
     original: Input,

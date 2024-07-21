@@ -1,5 +1,4 @@
 'server-only';
-import SITE_CONFIG from '@/config';
 import {
     applySchema,
     recursiveStringTransform,
@@ -8,8 +7,10 @@ import {
 import SocialLink from '../components/SocialLink';
 import MarkdownWrapper from '../components/MarkdownWrapper';
 import React, { cache } from 'react';
+import { SiteRouteProps } from '../utils/route';
+import SITE_CONFIG from '../utils/config';
 
-const getConfig = () => {
+const getConfig = ({ params: { siteId } }: SiteRouteProps) => {
     let config = applySchema(SITE_CONFIG_SCHEMA, SITE_CONFIG);
 
     if (config.cache.linkEmbeds) {

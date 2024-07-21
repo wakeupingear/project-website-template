@@ -1,7 +1,7 @@
 'use client';
 
 import useGallery from '@/src/hooks/useGallery';
-import { imageIsTransparent } from '@/src/utils';
+import { imageIsTransparent } from '@/src/utils/media';
 import clsx from 'clsx';
 import Image, { ImageProps } from 'next/image';
 import React, { useRef } from 'react';

@@ -1,6 +1,6 @@
 import React from 'react';
 import SocialLink from '../SocialLink';
-import getConfig from '@/src/lib/getConfig';
+import { SiteContent } from '@/src/utils/types';
 
 interface FactEntryProps {
     title: string;
@@ -16,11 +16,11 @@ function FactEntry({ title, children }: FactEntryProps) {
     );
 }
 
-export default function Factsheet() {
+export default function Factsheet({ config }: SiteContent) {
     const {
         team: { name: teamName, link: teamLink },
         project: { releaseDateStr, platforms, ratings, socialLinks },
-    } = getConfig();
+    } = config;
 
     return (
         <div className="flex flex-col gap-4 min-w-[12rem]">

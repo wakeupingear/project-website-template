@@ -5,18 +5,21 @@ import { FaCaretDown } from 'react-icons/fa';
 import Link from 'next/link';
 import ImageEmbed from '@/src/components/MediaEmbed/ImageEmbed';
 import getConfig from '@/src/lib/getConfig';
+import { SiteRouteProps } from '@/src/utils/route';
+import Footer from '@/src/components/Footer';
 
-export default function Home() {
+export default function Home(routeProps: SiteRouteProps) {
+    const config = getConfig(routeProps);
     const {
         project: { name: gameName, logline, socialLinks, logo },
         homepage: { content, links },
-    } = getConfig();
+    } = config;
 
     const hasMainContent = Boolean(content.length);
 
     return (
         <>
-            <Navbar />
+            <Navbar config={config} />
             <main>
                 <div className="bg-blue-300 min-h-screen w-full flex items-center justify-between flex-col gap-4">
                     <div />
@@ -54,12 +57,14 @@ export default function Home() {
                                     section={section}
                                     key={section.id}
                                     padSides
+                                    config={config}
                                 />
                             ))}
                         </div>
                     )}
                 </div>
             </main>
+            <Footer config={config} />
         </>
     );
 }

@@ -1,5 +1,5 @@
-import Credits from './src/components/credits';
-import { SiteConfig } from './src/utils/types';
+import Credits from '../components/credits';
+import { SiteConfig } from './types';
 
 const SITE_CONFIG: SiteConfig = {
     project: {
@@ -40,14 +40,14 @@ const SITE_CONFIG: SiteConfig = {
                 id: 'about',
                 title: 'About',
                 content: [
-                    'This is an example game{{game}} about.',
+                    'This is an example game{{project}} about.',
                     'This is an example game.',
                 ],
             },
             {
                 id: 'credits',
                 title: 'Credits',
-                content: [<Credits key="credits" />],
+                content: [Credits],
             },
         ],
     },

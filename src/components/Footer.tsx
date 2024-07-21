@@ -1,13 +1,13 @@
 import Link from 'next/link';
 import React from 'react';
 import SocialLinkRow from './SocialLink/SocialLinkRow';
-import getConfig from '../lib/getConfig';
+import { SiteContent } from '../utils/types';
 
-export default function Footer() {
+export default function Footer({ config }: SiteContent) {
     const {
         team,
         project: { socialLinks },
-    } = getConfig();
+    } = config;
     const { name: teamName, link: teamLink } = team || {};
 
     return (

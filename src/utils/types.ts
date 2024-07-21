@@ -31,7 +31,7 @@ export type SiteSection = {
     id: string;
     title: string;
     shortTitle?: string;
-    content: (string | React.ReactNode)[];
+    content: (string | React.ReactNode | React.FC<SiteContent>)[];
     hideInNav?: boolean;
 };
 
@@ -136,3 +136,7 @@ export const DEFUALT_SITE_CONFIG: TransformedSiteConfig = {
     },
     cache: { linkEmbeds: {}, mediaEmbeds: {} },
 };
+
+export interface SiteContent {
+    config: TransformedSiteConfig;
+}
