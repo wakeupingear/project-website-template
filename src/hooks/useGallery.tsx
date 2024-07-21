@@ -1,3 +1,5 @@
+'use client';
+
 /* eslint-disable @next/next/no-img-element */
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { MediaEmbed } from '../utils/types';

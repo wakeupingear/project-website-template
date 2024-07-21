@@ -110,3 +110,29 @@ export type TransformedSiteConfig = Modify<
         >;
     }
 >;
+
+export const DEFUALT_SITE_CONFIG: TransformedSiteConfig = {
+    project: {
+        description: '',
+        name: '',
+        logline: '',
+        platforms: [],
+        ratings: [],
+        socialLinks: [],
+    },
+    team: {
+        name: '',
+        contributors: {},
+    },
+    homepage: {
+        content: [],
+        links: [],
+    },
+    press: {
+        content: [],
+        videos: [],
+        images: [],
+        logos: [],
+    },
+    cache: { linkEmbeds: {}, mediaEmbeds: {} },
+};

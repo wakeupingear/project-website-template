@@ -1,3 +1,5 @@
+'use client';
+
 import useGallery from '@/src/hooks/useGallery';
 import { imageIsTransparent } from '@/src/utils';
 import clsx from 'clsx';

@@ -1,6 +1,6 @@
-import { useConfig } from '@/pages/_app';
 import React from 'react';
 import SocialLink from '../SocialLink';
+import getConfig from '@/src/lib/getConfig';
 
 interface FactEntryProps {
     title: string;
@@ -20,7 +20,7 @@ export default function Factsheet() {
     const {
         team: { name: teamName, link: teamLink },
         project: { releaseDateStr, platforms, ratings, socialLinks },
-    } = useConfig();
+    } = getConfig();
 
     return (
         <div className="flex flex-col gap-4 min-w-[12rem]">

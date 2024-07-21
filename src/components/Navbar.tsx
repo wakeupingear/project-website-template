@@ -1,6 +1,6 @@
-import { useConfig } from '@/pages/_app';
 import Link from 'next/link';
 import React from 'react';
+import getConfig from '../lib/getConfig';
 
 interface NavItemProps {
     href: string;
@@ -19,11 +19,11 @@ export default function Navbar() {
     const {
         homepage: { content },
         press,
-    } = useConfig();
+    } = getConfig();
     const navItems = content.filter(({ hideInNav }) => !hideInNav);
 
     return (
-        <nav id="page-nav" className="fixed top-0 left-0 w-full">
+        <nav id="page-nav" className="fixed top-0 left-0 w-full z-50">
             {Boolean(navItems.length && press) && (
                 <div className="flex">
                     {navItems.map(({ id, title }) => (

@@ -1,13 +1,13 @@
-import { useConfig } from '@/pages/_app';
 import Link from 'next/link';
 import React from 'react';
 import SocialLinkRow from './SocialLink/SocialLinkRow';
+import getConfig from '../lib/getConfig';
 
 export default function Footer() {
     const {
         team,
         project: { socialLinks },
-    } = useConfig();
+    } = getConfig();
     const { name: teamName, link: teamLink } = team || {};
 
     return (

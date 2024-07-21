@@ -1,11 +1,11 @@
-import { useConfig } from '@/pages/_app';
 import React from 'react';
 import Contributor from './Contributor';
+import getConfig from '@/src/lib/getConfig';
 
 export default function Credits() {
     const {
         team: { contributors },
-    } = useConfig();
+    } = getConfig();
 
     return (
         <div className="flex flex-col gap-4">

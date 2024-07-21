@@ -1,16 +1,16 @@
 import Section from '@/src/components/Section';
-import { useConfig } from './_app';
 import Navbar from '@/src/components/Navbar';
 import SocialCardColumn from '@/src/components/SocialLink/SocialCardColumn';
 import { FaCaretDown } from 'react-icons/fa';
 import Link from 'next/link';
 import ImageEmbed from '@/src/components/MediaEmbed/ImageEmbed';
+import getConfig from '@/src/lib/getConfig';
 
 export default function Home() {
     const {
         project: { name: gameName, logline, socialLinks, logo },
-        homepage: { content, links = [] },
-    } = useConfig();
+        homepage: { content, links },
+    } = getConfig();
 
     const hasMainContent = Boolean(content.length);
 
@@ -34,7 +34,7 @@ export default function Home() {
                         ) : null}
                         <p className="text-lg">{logline}</p>
                         <SocialCardColumn
-                            links={socialLinks}
+                            links={links || socialLinks}
                             className="mt-8"
                         />
                     </div>

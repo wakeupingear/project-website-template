@@ -1,17 +1,17 @@
 import React from 'react';
-import { useConfig } from './_app';
 import Factsheet from '@/src/components/press/Factsheet';
 import Section from '@/src/components/Section';
 import MediaEmbed from '@/src/components/MediaEmbed';
 import { GalleryWrapper } from '@/src/hooks/useGallery';
 import ImageEmbed from '@/src/components/MediaEmbed/ImageEmbed';
 import Link from 'next/link';
+import getConfig from '@/src/lib/getConfig';
 
 export default function Press() {
     const {
         project: { description, logo, name },
         press,
-    } = useConfig();
+    } = getConfig();
 
     const { content, videos, images, disabled, logos: _logos } = press;
     if (disabled) return null;
