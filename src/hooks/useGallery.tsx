@@ -159,7 +159,11 @@ export function GalleryWrapper({ children, urls }: GalleryWrapperProps) {
                 document.body.style.position = '';
                 document.body.style.top = '';
                 document.body.style.width = '';
-                window.scrollTo(0, parseInt(scrollY || '0') * -1);
+                window.scrollTo({
+                    left: 0,
+                    top: parseInt(scrollY || '0') * -1,
+                    behavior: 'instant',
+                });
 
                 setStyle({});
             }, 300);

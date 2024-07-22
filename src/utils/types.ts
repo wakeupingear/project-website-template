@@ -57,6 +57,11 @@ export interface SchemaInput {
     cache: SchemaCache;
 }
 
+export type SiteRouteProps = {
+    params: { siteId: string };
+    searchParams: { [key: string]: string | string[] | undefined };
+};
+
 export interface SiteConfig extends SchemaInput {
     project: {
         name: string;
@@ -96,7 +101,10 @@ export type TransformedSiteConfig = Modify<
                 ratings: SocialLink[];
                 socialLinks: SocialLink[];
                 logo?: MediaEmbed;
+                description?: string | React.ReactNode;
+
                 releaseDateStr?: string;
+                descriptionStr?: string;
             }
         >;
         team: Modify<

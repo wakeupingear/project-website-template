@@ -25,12 +25,15 @@ const IGNORED_STRING_TRANSFORM_KEYS = [
     'logline',
     'logo',
     'contributors',
+    'platforms',
     'link',
     'id',
     'title',
     'videos',
     'images',
     'logos',
+    'href',
+    'site',
 ];
 
 export const recursiveStringTransform = (

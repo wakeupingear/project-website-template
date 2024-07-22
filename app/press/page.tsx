@@ -6,11 +6,16 @@ import { GalleryWrapper } from '@/src/hooks/useGallery';
 import ImageEmbed from '@/src/components/MediaEmbed/ImageEmbed';
 import Link from 'next/link';
 import getConfig from '@/src/lib/getConfig';
-import { SiteRouteProps } from '@/src/utils/route';
 import Footer from '@/src/components/Footer';
+import { Metadata } from 'next';
+import { SiteRouteProps } from '@/src/utils/types';
 
-export default function Press(routeProps: SiteRouteProps) {
-    const config = getConfig(routeProps);
+export const metadata: Metadata = {
+    title: 'Press Kit',
+};
+
+export default async function Press(routeProps: SiteRouteProps) {
+    const config = await getConfig(routeProps);
     const {
         project: { description, logo, name },
         press,

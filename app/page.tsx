@@ -5,11 +5,11 @@ import { FaCaretDown } from 'react-icons/fa';
 import Link from 'next/link';
 import ImageEmbed from '@/src/components/MediaEmbed/ImageEmbed';
 import getConfig from '@/src/lib/getConfig';
-import { SiteRouteProps } from '@/src/utils/route';
 import Footer from '@/src/components/Footer';
+import { SiteRouteProps } from '@/src/utils/types';
 
-export default function Home(routeProps: SiteRouteProps) {
-    const config = getConfig(routeProps);
+export default async function Home(routeProps: SiteRouteProps) {
+    const config = await getConfig(routeProps);
     const {
         project: { name: gameName, logline, socialLinks, logo },
         homepage: { content, links },

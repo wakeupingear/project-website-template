@@ -1,11 +1,19 @@
 import '@/styles/globals.css';
-import Footer from '@/src/components/Footer';
 import { Inter } from 'next/font/google';
 import React from 'react';
-import { generateSiteMetadata } from '@/src/utils/route';
+import getConfig from '@/src/lib/getConfig';
+import { Metadata } from 'next';
+import { SiteRouteProps } from '@/src/utils/types';
 
-const generateMetadata = generateSiteMetadata();
-export { generateMetadata };
+export const generateMetadata = async (routeProps: SiteRouteProps) => {
+    const config = await getConfig(routeProps);
+    const metadata: Metadata = {
+        title: config.project.name,
+        description: config.project.descriptionStr,
+    };
+
+    return metadata;
+};
 
 const inter = Inter({ subsets: ['latin'] });
 

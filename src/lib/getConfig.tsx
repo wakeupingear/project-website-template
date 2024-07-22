@@ -7,10 +7,10 @@ import {
 import SocialLink from '../components/SocialLink';
 import MarkdownWrapper from '../components/MarkdownWrapper';
 import React, { cache } from 'react';
-import { SiteRouteProps } from '../utils/route';
 import SITE_CONFIG from '../utils/config';
+import { SiteRouteProps } from '../utils/types';
 
-const getConfig = ({ params: { siteId } }: SiteRouteProps) => {
+const getConfig = async ({ params: { siteId } }: SiteRouteProps) => {
     let config = applySchema(SITE_CONFIG_SCHEMA, SITE_CONFIG);
 
     if (config.cache.linkEmbeds) {
@@ -67,7 +67,9 @@ const getConfig = ({ params: { siteId } }: SiteRouteProps) => {
         });
     }
 
-    const { releaseDate } = config.project;
+    const ReactDOMServer = (await import('react-dom/server')).default;
+
+    const { releaseDate, description } = config.project;
     if (releaseDate)
         config.project.releaseDateStr =
             typeof releaseDate === 'number'
@@ -75,6 +77,15 @@ const getConfig = ({ params: { siteId } }: SiteRouteProps) => {
                 : typeof releaseDate === 'string'
                 ? releaseDate
                 : releaseDate.toLocaleDateString();
+    if (description) {
+        if (typeof description === 'string')
+            config.project.descriptionStr = description;
+        else {
+            config.project.descriptionStr = ReactDOMServer.renderToString(
+                description
+            ).replace(/(<([^>]+)>)/gi, '');
+        }
+    }
 
     return config;
 };
