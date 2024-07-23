@@ -1,50 +1,21 @@
-import { ExternalSite } from '@/src/utils/types';
+import { EXTERNAL_SITE_METADATA, ExternalSite } from '@/src/utils/types';
 import React from 'react';
-import { IconBaseProps, IconType } from 'react-icons';
-import {
-    FaApple,
-    FaArtstation,
-    FaDiscord,
-    FaExternalLinkAlt,
-    FaGithub,
-    FaKickstarter,
-    FaLinkedin,
-    FaPatreon,
-    FaSteam,
-    FaTiktok,
-    FaTwitch,
-    FaTwitter,
-    FaYoutube,
-} from 'react-icons/fa';
-
-const ICONS: Record<ExternalSite, IconType> = {
-    artstation: FaArtstation,
-    discord: FaDiscord,
-    github: FaGithub,
-    kickstarter: FaKickstarter,
-    patreon: FaPatreon,
-    twitch: FaTwitch,
-    twitter: FaTwitter,
-    youtube: FaYoutube,
-    steam: FaSteam,
-    apple: FaApple,
-    linkedin: FaLinkedin,
-    tiktok: FaTiktok,
-};
+import { IconBaseProps } from 'react-icons';
+import { FaExternalLinkAlt } from 'react-icons/fa';
 
 const ICON_PROPS = {
     className: 'inline-block mr-1',
 };
 
 export const siteHasIcon = (site: ExternalSite | undefined) =>
-    Boolean(site && site in ICONS);
+    Boolean(site && site in EXTERNAL_SITE_METADATA);
 
 interface SocialIconProps extends IconBaseProps {
     site: ExternalSite | undefined;
 }
 
 export default function SocialIcon({ site, ...props }: SocialIconProps) {
-    const IconComponent = site ? ICONS[site] : null;
+    const IconComponent = site ? EXTERNAL_SITE_METADATA[site].icon : null;
 
     return (
         <span className="text-nowrap">

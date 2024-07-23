@@ -15,6 +15,8 @@ export default function SocialLink({
     haveComma,
 }: SocialLinkProps) {
     const { href, name, site } = link;
+    const text =
+        name || (site ? site[0].toUpperCase() + site.slice(1) : 'Link');
 
     return (
         <span className="inline-block group">
@@ -23,13 +25,10 @@ export default function SocialLink({
                 target="_blank"
                 rel="noreferrer"
                 className="text-link text-red"
+                title={text}
             >
                 {!hideLogo && <SocialIcon site={site} />}
-                {Boolean(hideLogo || !hideText || !siteHasIcon(site)) &&
-                    (name ||
-                        (site
-                            ? site[0].toUpperCase() + site.slice(1)
-                            : 'Link'))}
+                {Boolean(hideLogo || !hideText || !siteHasIcon(site)) && text}
             </a>
             {haveComma && (
                 <span className="text-black !no-underline">,&nbsp;</span>

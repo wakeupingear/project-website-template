@@ -1,4 +1,28 @@
 import React from 'react';
+import { IconType } from 'react-icons';
+import { BsSubstack } from 'react-icons/bs';
+import {
+    FaApple,
+    FaArtstation,
+    FaDiscord,
+    FaExternalLinkAlt,
+    FaGithub,
+    FaItchIo,
+    FaKickstarter,
+    FaLinkedin,
+    FaMastodon,
+    FaPatreon,
+    FaRegEnvelope,
+    FaSpotify,
+    FaSteam,
+    FaTiktok,
+    FaTrophy,
+    FaTwitch,
+    FaTwitter,
+    FaWikipediaW,
+    FaXbox,
+    FaYoutube,
+} from 'react-icons/fa';
 
 export type ExternalSite =
     | 'twitter'
@@ -12,7 +36,57 @@ export type ExternalSite =
     | 'steam'
     | 'apple'
     | 'tiktok'
-    | 'linkedin';
+    | 'linkedin'
+    | 'substack'
+    | 'mastodon'
+    | 'speedrun'
+    | 'email'
+    | 'spotify'
+    | 'xbox'
+    | 'wikipedia'
+    | 'itch';
+
+export const EXTERNAL_SITE_METADATA: Record<
+    ExternalSite,
+    {
+        icon: IconType;
+        prefixes?: string[];
+    }
+> = {
+    artstation: { icon: FaArtstation, prefixes: ['https://artstation.com/'] },
+    discord: { icon: FaDiscord, prefixes: ['https://discord.gg/'] },
+    github: { icon: FaGithub, prefixes: ['https://github.com/'] },
+    kickstarter: {
+        icon: FaKickstarter,
+        prefixes: ['https://kickstarter.com/'],
+    },
+    mastodon: { icon: FaMastodon, prefixes: ['https://mastodon.social/'] },
+    patreon: { icon: FaPatreon, prefixes: ['https://patreon.com/'] },
+    speedrun: { icon: FaTrophy, prefixes: ['https://speedrun.com/'] },
+    substack: { icon: BsSubstack, prefixes: ['https://substack.com/'] },
+    twitch: { icon: FaTwitch, prefixes: ['https://twitch.tv/'] },
+    twitter: {
+        icon: FaTwitter,
+        prefixes: ['https://twitter.com/', 'https://x.com/'],
+    },
+    youtube: {
+        icon: FaYoutube,
+        prefixes: ['https://youtube.com/', 'https://www.youtube.com/'],
+    },
+    steam: { icon: FaSteam, prefixes: ['https://store.steampowered.com/app/'] },
+    apple: { icon: FaApple, prefixes: ['https://apps.apple.com/us/app/'] },
+    linkedin: {
+        icon: FaLinkedin,
+        prefixes: ['https://www.linkedin.com/company/'],
+    },
+    tiktok: { icon: FaTiktok, prefixes: ['https://tiktok.com/@'] },
+    email: { icon: FaRegEnvelope, prefixes: ['mailto:'] },
+    spotify: { icon: FaSpotify, prefixes: ['https://open.spotify.com/'] },
+    xbox: { icon: FaXbox, prefixes: ['https://www.xbox.com/en-us/games/'] },
+    wikipedia: { icon: FaWikipediaW, prefixes: ['https://wikipedia.org/'] },
+    itch: { icon: FaItchIo, prefixes: ['https://itch.io/'] },
+};
+
 export type SocialLink = {
     href: string;
     site?: ExternalSite;

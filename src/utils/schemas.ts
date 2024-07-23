@@ -1,6 +1,7 @@
 import React from 'react';
 import {
     _ProjectContributor,
+    EXTERNAL_SITE_METADATA,
     ExternalSite,
     GroupedContributors,
     MediaEmbed,
@@ -158,21 +159,6 @@ const transform_mediaEmbed: Transform<
     return media;
 };
 
-export const SOCIAL_LINK_PREFIXES: Record<string, ExternalSite> = {
-    'https://www.youtube.com/': 'youtube',
-    'https://www.twitch.tv/': 'twitch',
-    'https://twitter.com/': 'twitter',
-    'https://x.com/': 'twitter',
-    'https://discord.gg/': 'discord',
-    'https://github.com/': 'github',
-    'https://patreon.com/': 'patreon',
-    'https://kickstarter.com/': 'kickstarter',
-    'https://artstation.com/': 'artstation',
-    'https://store.steampowered.com/app/': 'steam',
-    'https://apps.apple.com/us/app/': 'apple',
-    'https://tiktok.com/@': 'tiktok',
-    'https://www.linkedin.com/company/': 'linkedin',
-};
 const transform_socialLink: Transform<
     SocialLink | string | undefined,
     SocialLink | undefined
@@ -182,13 +168,11 @@ const transform_socialLink: Transform<
         const site = cache.linkEmbeds[link];
         if (site) return site;
 
-        const prefix = Object.keys(SOCIAL_LINK_PREFIXES).find((prefix) =>
-            (link as string).startsWith(prefix)
+        const metadata = Object.entries(EXTERNAL_SITE_METADATA).find(
+            ([_, { prefixes }]) =>
+                prefixes?.some((prefix) => (link as string).startsWith(prefix))
         );
-        if (prefix) {
-            const site = SOCIAL_LINK_PREFIXES[prefix];
-            return { href: link, site };
-        }
+        if (metadata) return { href: link, site: metadata[0] as ExternalSite };
 
         if (link.startsWith('https://' || link.startsWith('http://')))
             link = { href: link };
@@ -196,10 +180,11 @@ const transform_socialLink: Transform<
     }
     if (link.site) return link;
 
-    const prefix = Object.keys(SOCIAL_LINK_PREFIXES).find((prefix) =>
-        link.href.startsWith(prefix)
+    const metadata = Object.entries(EXTERNAL_SITE_METADATA).find(
+        ([_, { prefixes }]) =>
+            prefixes?.some((prefix) => link.href.startsWith(prefix))
     );
-    if (prefix) link.site = SOCIAL_LINK_PREFIXES[prefix];
+    if (metadata) link.site = metadata[0] as ExternalSite;
 
     return link;
 };
